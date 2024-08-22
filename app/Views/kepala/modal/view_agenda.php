@@ -127,7 +127,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="btnCloseModal()">Close</button>
-                <?php if ($idlembaga_user == $event["nama_lembaga"] && $jabatan == 1) { ?>
+                <?php if ($idlembaga_user == $event["idlembaga"] && $jabatan == 1) { ?>
                     <button type="button" onclick="hapusAgenda('<?= $event['idevent']; ?>')" class="btn text-white btndaftar btn-danger"><i class="fas fa-eraser"></i> | Hapus</button>
                     <button type="button" onclick="editAgenda('<?= $event['idevent']; ?>')" class="btn text-white btndaftar btn-warning"><i class="fas fa-shapes"></i> | Edit Agenda</button>
                 <?php  } ?>

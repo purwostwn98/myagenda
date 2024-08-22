@@ -165,7 +165,7 @@ class Kepala extends BaseController
             ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
             ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
             ->join("my_user as user", "my_event.created_by = user.username", "LEFT")
-            ->select("idevent, title, start, end, created_by, nama_lembaga, ket_jenis, deskripsi, link_eksternal, nama_gelar, prioritas_event, peserta, ket_bentuk, tempat_event")
+            ->select("idevent, title, start, end, created_by, nama_lembaga, ket_jenis, deskripsi, link_eksternal, nama_gelar, prioritas_event, peserta, ket_bentuk, tempat_event, my_event.idlembaga")
             ->first();
 
         $peserta = json_decode($event["peserta"]);
