@@ -75,4 +75,18 @@ class EventModel extends Model
         }
         return $msg;
     }
+
+    public function hapus($idevent)
+    {
+        $this->transBegin();
+        $this->delete($idevent);
+        if ($this->transStatus() === false) {
+            $this->transRollback();
+            $msg = 0;
+        } else {
+            $this->transCommit();
+            $msg = 1;
+        }
+        return $msg;
+    }
 }

@@ -128,6 +128,7 @@ class Kepala extends BaseController
     {
         $datatampil = [
             "units" => $this->unitModel->findAll(),
+            "idlembaga_user" => $_SESSION["userdata"]["idlembaga"],
             "jenis_event" => $this->jenisEventModel->findAll(),
             "jenis_peserta" => $this->jenisPesertaModel->findAll(),
             "bentuk_kegiatan" => $this->bentukKegiatanModel->where("bentuk_active", 1)->findAll()
@@ -175,11 +176,35 @@ class Kepala extends BaseController
             "tgl_mulai" => convertToIndonesianTime($event["start"]),
             "tgl_selesai" => convertToIndonesianTime($event["end"]),
             "peserta" => json_decode($event["peserta"]),
-            "jenis_peserta" => $jenis_peserta
+            "jenis_peserta" => $jenis_peserta,
+            "idlembaga_user" => $this->session->get("userdata")["idlembaga"],
+            "jabatan" => $this->session->get("userdata")["jabatan"]
         ];
         $data = [
             'modal' => view("kepala/modal/view_agenda", $datatampil)
         ];
         echo json_encode($data);
+    }
+
+    function do_hapus_agenda()
+    {
+        if ($this->request->isAJAX()) {
+            $idevent = $this->request->getPost("id");
+            $hapus = $this->eventModel->hapus($idevent);
+            if ($hapus == 1) {
+                $data = [
+                    "success" => true,
+                    "pesan" => "Agenda terhapus... "
+                ];
+            } else {
+                $data = [
+                    "success" => true,
+                    "pesan" => "Gagal menghapus ..."
+                ];
+            }
+            echo json_encode($data);
+        } else {
+            exit("Ovovyepjed");
+        }
     }
 }

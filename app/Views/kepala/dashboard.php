@@ -106,9 +106,11 @@ $session = $ss->get("userdata");
                     <div class="mb-3 mb-sm-0">
                         <h5 class="card-title fw-semibold">Agenda UMS</h5>
                     </div>
-                    <div class="mb-3 mb-sm-0">
-                        <button class="btn btn-md btn-primary btn-tambah-agenda"><i class="fas fa-calendar-plus"></i> | Tambah Agenda</button>
-                    </div>
+                    <?php if ($session["jabatan"] == 1) { ?>
+                        <div class="mb-3 mb-sm-0">
+                            <button class="btn btn-md btn-primary btn-tambah-agenda"><i class="fas fa-calendar-plus"></i> | Tambah Agenda</button>
+                        </div>
+                    <?php } ?>
                 </div>
                 <div id='calendar'></div>
             </div>
@@ -281,6 +283,58 @@ $session = $ss->get("userdata");
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+        });
+        return false;
+    }
+
+    function hapusAgenda(idevent) {
+
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Ingin menghapus agenda ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // var csrfName = 'csrf_test_name'; // CSRF Token name
+                // var csrfHash = $("input[name='csrf_test_name']").val(); // CSRF hash
+                $.ajax({
+                    url: "<?= site_url('kepala/do-hapus-agenda'); ?>",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: idevent
+                        // [csrfName]: csrfHash
+                    },
+                    beforeSend: function() {},
+                    complete: function() {},
+                    success: function(response) {
+                        if (response.success == true) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: response.pesan,
+                                icon: "success"
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Gagal!",
+                                text: response.pesan,
+                                icon: "error"
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                    }
+                });
             }
         });
         return false;
