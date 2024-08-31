@@ -88,7 +88,7 @@ $nama_depan = $n[0];
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="<?= base_url(); ?>/main/app-kanban.html" aria-expanded="false">
+                            <a class="sidebar-link <?= $menu == 'Daftar-Agenda' ? 'active' : ''; ?>" href="/daftar-agenda" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-kanban"></i>
                                 </span>

@@ -128,7 +128,7 @@ class Kepala extends BaseController
     {
         $datatampil = [
             "units" => $this->unitModel->findAll(),
-            "idlembaga_user" => $_SESSION["userdata"]["idlembaga"],
+            "lembaga_user" => $this->unitModel->where("idlembaga", $_SESSION["userdata"]["idlembaga"])->first(),
             "jenis_event" => $this->jenisEventModel->findAll(),
             "jenis_peserta" => $this->jenisPesertaModel->findAll(),
             "bentuk_kegiatan" => $this->bentukKegiatanModel->where("bentuk_active", 1)->findAll()
@@ -169,6 +169,9 @@ class Kepala extends BaseController
             ->first();
 
         $peserta = json_decode($event["peserta"]);
+        if (empty($peserta)) {
+            $peserta = ["0"];
+        }
         $jenis_peserta = $this->jenisPesertaModel->whereIn("id_jnspeserta", $peserta)->select("ket_peserta")->findAll();
 
         $datatampil = [

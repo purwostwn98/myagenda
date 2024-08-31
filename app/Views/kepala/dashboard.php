@@ -40,83 +40,89 @@ $session = $ss->get("userdata");
 </div>
 
 <div class="row">
-    <div class="col-lg-6">
-        <!-- Yearly Breakup -->
-        <div class="card overflow-hidden bg-primer">
-            <div class="card-body p-4">
-                <h5 class="card-title mb-9 fw-semibold text-white">Filter Unit</h5>
-                <div class="row align-items-center">
-                    <div class="col-12 mb-2">
-                        <select class="form-select bg-primer text-white" id="jenis_unit">
-                            <option value="all">Semua Jenis Unit</option>
-                            <?php foreach ($jenis_unit as $key => $jn) { ?>
-                                <option <?= $jn["id_jenis_unit"] == $row_lembaga["type"] ? 'selected' : ''; ?> value="<?= $jn["id_jenis_unit"]; ?>"><?= $jn["ket_jenis_unit"]; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                        <select class="form-select bg-primer text-white" id="unit">
-                            <option value="all">Semua Unit</option>
-                            <?php foreach ($all_lembaga as $key => $lmbg) { ?>
-                                <option <?= $lmbg["idlembaga"] == $idlembaga_user ? 'selected' : ''; ?> value="<?= $lmbg["idlembaga"]; ?>"><?= $lmbg["nama_lembaga"]; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <!-- Monthly Earnings -->
-        <div class="card" style="background-color: #2f3184">
-            <div class="card-body">
-                <div class="row alig n-items-start">
-                    <div class="col-12">
-                        <h5 class="card-title mb-9 fw-semibold text-white"> Jenis Agenda </h5>
-                        <div class="col-12 mb-2">
-                            <select class="form-select text-white bg-primer" id="jenis_agenda">
-                                <option value="all" selected>Semua Jenis Agenda</option>
-                                <?php foreach ($jenis_agenda as $key => $ja) { ?>
-                                    <option value="<?= $ja["idjenis"]; ?>"><?= $ja["ket_jenis"]; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <select class="form-select text-white bg-primer" id="prioritas_agenda">
-                                <option value="all" selected>Semua Tingkat Kepentingan</option>
-                                <option value="1">Sangat Penting</option>
-                                <option value="2">Penting</option>
-                                <option value="3">Kurang Penting</option>
-                            </select>
+    <div class="col-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Yearly Breakup -->
+                <div class="card overflow-hidden bg-primer">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-9 fw-semibold text-white">Filter Unit</h5>
+                        <div class="row align-items-center">
+                            <div class="col-12 mb-2">
+                                <select class="form-select bg-primer text-white" id="jenis_unit">
+                                    <option value="all">Semua Jenis Unit</option>
+                                    <?php foreach ($jenis_unit as $key => $jn) { ?>
+                                        <option <?= $jn["id_jenis_unit"] == $row_lembaga["type"] ? 'selected' : ''; ?> value="<?= $jn["id_jenis_unit"]; ?>"><?= $jn["ket_jenis_unit"]; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <select class="form-select bg-primer text-white" id="unit">
+                                    <option value="all">Semua Unit</option>
+                                    <?php foreach ($all_lembaga as $key => $lmbg) { ?>
+                                        <option <?= $lmbg["idlembaga"] == $idlembaga_user ? 'selected' : ''; ?> value="<?= $lmbg["idlembaga"]; ?>"><?= $lmbg["nama_lembaga"]; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="earning"></div>
+            <div class="col-lg-12">
+                <!-- Monthly Earnings -->
+                <div class="card" style="background-color: #2f3184">
+                    <div class="card-body">
+                        <div class="row alig n-items-start">
+                            <div class="col-12">
+                                <h5 class="card-title mb-9 fw-semibold text-white"> Jenis Agenda </h5>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select text-white bg-primer" id="jenis_agenda">
+                                        <option value="all" selected>Semua Jenis Agenda</option>
+                                        <?php foreach ($jenis_agenda as $key => $ja) { ?>
+                                            <option value="<?= $ja["idjenis"]; ?>"><?= $ja["ket_jenis"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <select class="form-select text-white bg-primer" id="prioritas_agenda">
+                                        <option value="all" selected>Semua Tingkat Kepentingan</option>
+                                        <option value="1">Sangat Penting</option>
+                                        <option value="2">Penting</option>
+                                        <option value="3">Kurang Penting</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="earning"></div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <div class="col-9">
+        <div class="row">
+            <!-- kiri -->
+            <div class="col-lg-12  align-items-strech">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                            <div class="mb-3 mb-sm-0">
+                                <h5 class="card-title fw-semibold">Agenda UMS</h5>
+                            </div>
+                            <?php if ($session["jabatan"] == 1) { ?>
+                                <div class="mb-3 mb-sm-0">
+                                    <button class="btn btn-md btn-primary btn-tambah-agenda"><i class="fas fa-calendar-plus"></i> | Tambah Agenda</button>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+            <!-- kanan -->
+        </div>
+    </div>
 
-<div class="row">
-    <!-- kiri -->
-    <div class="col-lg-12  align-items-strech">
-        <div class="card w-100">
-            <div class="card-body">
-                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                    <div class="mb-3 mb-sm-0">
-                        <h5 class="card-title fw-semibold">Agenda UMS</h5>
-                    </div>
-                    <?php if ($session["jabatan"] == 1) { ?>
-                        <div class="mb-3 mb-sm-0">
-                            <button class="btn btn-md btn-primary btn-tambah-agenda"><i class="fas fa-calendar-plus"></i> | Tambah Agenda</button>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div id='calendar'></div>
-            </div>
-        </div>
-    </div>
-    <!-- kanan -->
 </div>
 
 <div class="modaltambah"></div>

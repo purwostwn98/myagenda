@@ -38,11 +38,8 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="selSertif" class="text-primer mt-2"><b>Unit Penyelenggara:</b></label>
-                                <select class="form-control" name="idlembaga" id="selSertif" disabled>
-                                    <option value="" selected disabled></option>
-                                    <?php foreach ($units as $key => $u) { ?>
-                                        <option <?= $idlembaga_user == $u["idlembaga"] ? 'selected' : 'false'; ?> value="<?= $u["idlembaga"]; ?>"><?= $u["nama_lembaga"]; ?></option>
-                                    <?php } ?>
+                                <select class="form-control" name="idlembaga" id="selSertif">
+                                    <option selected value="<?= $lembaga_user["idlembaga"]; ?>"><?= $lembaga_user["nama_lembaga"]; ?></option>
                                 </select>
                             </div>
                         </div>

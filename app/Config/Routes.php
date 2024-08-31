@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 // $routes->get('/', 'Home::index');
 $routes->get('/index-old', 'Umum::index');
+$routes->get('/daftar-agenda', 'Umum::v_daftar_agenda');
 $routes->post('/umum/dinamis/load_events', 'Umum::dinamis_load_events');
 $routes->post('/umum/dinamis/dashboard_jenis_unit_change', 'Umum::dashboard_jenis_unit_change');
 

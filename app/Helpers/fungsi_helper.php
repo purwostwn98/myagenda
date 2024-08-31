@@ -1,5 +1,7 @@
 <?php
 
+use CodeIgniter\I18n\Time;
+
 function convertToIndonesianTime($datetime)
 {
     // Create a DateTime object from the input datetime
@@ -13,4 +15,39 @@ function convertToIndonesianTime($datetime)
     $formattedDateTime = $indonesiaDateTime->format('l, d F Y H:i:s');
 
     return $formattedDateTime;
+}
+
+function datetimeToBahasa($datetime)
+{
+    $time = Time::parse($datetime);
+
+    $days = [
+        'Sunday' => 'Minggu',
+        'Monday' => 'Senin',
+        'Tuesday' => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday' => 'Kamis',
+        'Friday' => 'Jumat',
+        'Saturday' => 'Sabtu'
+    ];
+
+    $months = [
+        'January' => 'Januari',
+        'February' => 'Februari',
+        'March' => 'Maret',
+        'April' => 'April',
+        'May' => 'Mei',
+        'June' => 'Juni',
+        'July' => 'Juli',
+        'August' => 'Agustus',
+        'September' => 'September',
+        'October' => 'Oktober',
+        'November' => 'November',
+        'December' => 'Desember'
+    ];
+
+    $dayName = $days[$time->format('l')];
+    $monthName = $months[$time->format('F')];
+
+    return $dayName . ', ' . $time->format('d') . ' ' . $monthName . ' ' . $time->format('Y H:i:s');
 }

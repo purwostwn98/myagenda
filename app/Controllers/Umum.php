@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\EventModel;
+use CodeIgniter\I18n\Time;
 
 class Umum extends BaseController
 {
@@ -224,5 +225,46 @@ class Umum extends BaseController
         } else {
             exit("Salah alamat");
         }
+    }
+
+    public function v_daftar_agenda()
+    {
+        $timeNow = Time::now();
+        $next30Days = Time::now()->addDays(30);
+
+        $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
+            ->where("start >=", $timeNow->toDateString())->where("end <=", $next30Days->toDateString())
+            ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
+            ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
+            ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
+            ->select("idevent, title, start, end, ket_jenis, ket_bentuk, tempat_event, my_event.idlembaga")
+            ->orderBy("start", "ASC")
+            ->findAll();
+
+        $arr_agenda = [];
+        foreach ($event as $k => $e) {
+            $arr_agenda[] = [
+                "title" => $e["title"],
+                "tempat_event" => $e["tempat_event"],
+                "start" => datetimeToBahasa($e["start"]),
+                "end" => datetimeToBahasa($e["end"]),
+                "ket_jenis" => $e["ket_jenis"],
+                "ket_bentuk" => $e["ket_bentuk"],
+            ];
+        }
+
+        $idlembaga_user = $this->session->get("userdata")["idlembaga"];
+        $lembaga = $this->unitModel->where("idlembaga", $idlembaga_user)->first();
+        // $peserta = json_decode($event["peserta"]);
+        // $jenis_peserta = $this->jenisPesertaModel->whereIn("id_jnspeserta", $peserta)->select("ket_peserta")->findAll();
+
+        $datatampil = [
+            "menu" => "Daftar-Agenda",
+            "event" => $arr_agenda,
+            "lembaga_user" => $lembaga,
+            "jabatan" => $this->session->get("userdata")["jabatan"]
+        ];
+
+        return view('umum/daftar_agenda', $datatampil);
     }
 }
