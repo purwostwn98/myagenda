@@ -285,7 +285,7 @@ $session = $ss->get("userdata");
                     headerToolbar: {
                         left: 'prev,next',
                         center: 'title',
-                        right: 'dayGridYear,dayGridWeek,dayGridDay'
+                        right: 'dayGridYear,dayGridMonth,dayGridWeek,dayGridDay'
                     },
                     editable: true,
                     events: response.events
@@ -376,8 +376,3 @@ $session = $ss->get("userdata");
 </script>
 
 <?= $this->endSection(); ?>
-
-<!-- <?= $this->section("js_section"); ?>
-<script src="<?= base_url(); ?>/pro/assets/libs/quill/dist/quill.min.js"></script>
-<script src="<?= base_url(); ?>/pro/assets/js/forms/quill-init.js"></script>
-<?= $this->endSection(); ?> -->

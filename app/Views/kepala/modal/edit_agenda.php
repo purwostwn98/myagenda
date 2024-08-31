@@ -57,7 +57,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="jenisEvent" class="text-primer mt-2"><b>Bidang Kegiatan:</b></label>
+                                <label for="jenisEvent" class="text-primer mt-2"><b>Bidang Agenda:</b></label>
                                 <select class="form-control" name="idjenis" id="jenisEvent">
                                     <option value="" disabled></option>
                                     <?php foreach ($jenis_event as $key => $j) { ?>
@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="jenisEvent" class="text-primer mt-2"><b>Bentuk Kegiatan:</b></label>
+                                <label for="jenisEvent" class="text-primer mt-2"><b>Bentuk Agenda:</b></label>
                                 <select class="form-control" name="bentuk_kegiatan" id="jenisEvent">
                                     <option value="" disabled></option>
                                     <?php foreach ($bentuk_kegiatan as $key => $j) { ?>
