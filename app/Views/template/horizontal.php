@@ -791,6 +791,12 @@ $nama_depan = $n[0];
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/e1dbca68b6.js" crossorigin="anonymous"></script>
 
+        <script>
+            function btnCloseModal() {
+                $(".modal").modal("hide");
+            }
+        </script>
+
         <!-- JS custome -->
         <?= $this->renderSection("js_section"); ?>
 </body>

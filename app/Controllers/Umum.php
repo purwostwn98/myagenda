@@ -31,6 +31,7 @@ class Umum extends BaseController
         $unit = $this->request->getPost("unit"); // atau lembaga
         $jenis_agenda = $this->request->getPost("jenis_agenda");
         $prioritas_agenda = $this->request->getPost("prioritas_agenda");
+        $bentuk_agenda = $this->request->getPost("bentuk_agenda");
 
         $where = [];
         if ($type != "all") {
@@ -44,6 +45,9 @@ class Umum extends BaseController
         }
         if ($prioritas_agenda != "all") {
             $where["prioritas_event"] = $prioritas_agenda;
+        }
+        if ($bentuk_agenda != "all") {
+            $where["bentuk_kegiatan"] = $bentuk_agenda;
         }
 
         // print_r($where);

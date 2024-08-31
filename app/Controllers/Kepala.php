@@ -41,6 +41,8 @@ class Kepala extends BaseController
     // ini digunakan untuk dashborad secara umum - meskipun di kepala
     public function dashboard(): string
     {
+        // rodo mumet => kegiatan = agenda = event (kui poodooo)
+
         $idlembaga = $this->session->get("userdata")["idlembaga"];
         $row_lembaga = $this->unitModel->where("idlembaga", $idlembaga)->first();
         $all_lembaga = $this->unitModel->where("type", $row_lembaga["type"])->select("idlembaga, nama_lembaga")->findAll();
@@ -54,7 +56,8 @@ class Kepala extends BaseController
             "row_lembaga" => $row_lembaga,
             "all_lembaga" => $all_lembaga,
             "idlembaga_user" => $idlembaga,
-            "jenis_agenda" => $this->jenisEventModel->findAll(),
+            "jenis_agenda" => $this->jenisEventModel->where("jenis_active", 1)->findAll(),
+            "bentuk_agenda" => $this->bentukKegiatanModel->where("bentuk_active", 1)->findAll(),
             "hari_tanggal" => datetimeToBahasa($datetimeNow)
         ];
 

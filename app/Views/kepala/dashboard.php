@@ -40,16 +40,6 @@ $session = $ss->get("userdata");
                         <span class="text-primer"><strong><?= $tanggal; ?></strong></span> <br>
                     </div>
                 </div>
-                <!-- <h4 class="fw-semibold mb-8">Assalaamu'alaykum, <b class="text-primer"><?= $session["nama_gelar"]; ?></b></h4>
-                <hr>
-                <span>Jabatan : <b class="text-primer"><?= $session["jabatan"] == 1 ? $session["nama_jabatan"] : '-'; ?></b> <br> Unit : <b class="text-primer"><?= $row_lembaga["nama_lembaga"]; ?></b></span> -->
-                <!-- <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a class="text-muted text-decoration-none" href="#">Calendar</a>
-                        </li>
-                    </ol>
-                </nav> -->
             </div>
             <div class="col-3">
                 <div class="text-center mb-n5">
@@ -61,6 +51,7 @@ $session = $ss->get("userdata");
 </div>
 
 <div class="row">
+    <!-- Filter -->
     <div class="col-md-3 col-sm-12">
         <div class="row">
             <div class="col-lg-12">
@@ -95,12 +86,20 @@ $session = $ss->get("userdata");
                     <div class="card-body">
                         <div class="row alig n-items-start">
                             <div class="col-12">
-                                <h5 class="card-title mb-9 fw-semibold text-white"> Jenis Agenda </h5>
+                                <h5 class="card-title mb-9 fw-semibold text-white"> Filter Agenda </h5>
                                 <div class="col-12 mb-2">
                                     <select class="form-select text-white bg-primer" id="jenis_agenda">
-                                        <option value="all" selected>Semua Jenis Agenda</option>
+                                        <option value="all" selected>Semua Bidang Agenda</option>
                                         <?php foreach ($jenis_agenda as $key => $ja) { ?>
                                             <option value="<?= $ja["idjenis"]; ?>"><?= $ja["ket_jenis"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select text-white bg-primer" id="bentuk_agenda">
+                                        <option value="all" selected>Semua Bentuk Agenda</option>
+                                        <?php foreach ($bentuk_agenda as $key => $ja) { ?>
+                                            <option value="<?= $ja["id_bentuk_kegiatan"]; ?>"><?= $ja["ket_bentuk"]; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -120,6 +119,7 @@ $session = $ss->get("userdata");
             </div>
         </div>
     </div>
+    <!-- Calendar -->
     <div class="col-md-9 com-sm-12">
         <div class="row">
             <!-- kiri -->
@@ -217,6 +217,11 @@ $session = $ss->get("userdata");
             //refresh calendar
             refreshCalendar();
         });
+
+        $('#bentuk_agenda').change(function() {
+            //refresh calendar
+            refreshCalendar();
+        });
     });
 
     function refreshCalendar() {
@@ -224,18 +229,19 @@ $session = $ss->get("userdata");
         var unit = $("#unit").val();
         var jenis_agenda = $("#jenis_agenda").val();
         var prioritas_agenda = $("#prioritas_agenda").val();
-        Calendar(type, unit, jenis_agenda, prioritas_agenda);
+        var bentuk_agenda = $("#bentuk_agenda").val();
+        Calendar(type, unit, jenis_agenda, prioritas_agenda, bentuk_agenda);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         var type = $("#jenis_unit").val();
         var unit = $("#unit").val();
-        Calendar(type, unit, "all", "all");
+        Calendar(type, unit, "all", "all", "all");
     });
 </script>
 
 <script>
-    function Calendar(type = "all", unit = "all", jenis_agenda = "all", prioritas_agenda = "all") {
+    function Calendar(type = "all", unit = "all", jenis_agenda = "all", prioritas_agenda = "all", bentuk_agenda = "all") {
         var calendarEl = document.getElementById('calendar');
         $.ajax({
             url: "<?= site_url('umum/dinamis/load_events'); ?>",
@@ -245,7 +251,8 @@ $session = $ss->get("userdata");
                 type: type,
                 unit: unit,
                 jenis_agenda: jenis_agenda,
-                prioritas_agenda: prioritas_agenda
+                prioritas_agenda: prioritas_agenda,
+                bentuk_agenda: bentuk_agenda
             },
             beforeSend: function() {},
             complete: function() {},
