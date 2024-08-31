@@ -248,10 +248,10 @@ $nama_depan = $n[0];
                                                     <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                                         <img src="<?= base_url(); ?>/pro/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80" alt="modernize-img" />
                                                         <div class="ms-3">
-                                                            <h5 class="mb-1 fs-3">Mathew Anderson</h5>
+                                                            <h5 class="mb-1 fs-3"><?= $session["nama_gelar"]; ?></h5>
                                                             <span class="mb-1 d-block">Designer</span>
                                                             <p class="mb-0 d-flex align-items-center gap-2">
-                                                                <i class="ti ti-mail fs-4"></i> info@modernize.com
+                                                                <i class="ti ti-mail fs-4"></i> <?= $session["uniid"]; ?>@ums.ac.id
                                                             </p>
                                                         </div>
                                                     </div>
@@ -355,10 +355,9 @@ $nama_depan = $n[0];
                                                     <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                                         <img src="<?= base_url(); ?>/pro/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80" alt="modernize-img" />
                                                         <div class="ms-3">
-                                                            <h5 class="mb-1 fs-3">Mathew Anderson</h5>
-                                                            <span class="mb-1 d-block">Designer</span>
+                                                            <h5 class="mb-1 fs-3"><?= $session["nama_gelar"]; ?></h5>
                                                             <p class="mb-0 d-flex align-items-center gap-2">
-                                                                <i class="ti ti-mail fs-4"></i> info@modernize.com
+                                                                <i class="ti ti-mail fs-4"></i> <?= $session["uniid"]; ?>@ums.ac.id
                                                             </p>
                                                         </div>
                                                     </div>
@@ -423,6 +422,18 @@ $nama_depan = $n[0];
                                         <span class="hide-menu">Daftar Agenda</span>
                                     </a>
                                 </li>
+                                <?php if ($session["nama_jabatan"] != "-") {
+                                    if ($session["nama_jabatan"] != "Delegasi") {  ?>
+                                        <li class="sidebar-item">
+                                            <a class="sidebar-link <?= $menu == 'Atur-Delegasi' ? 'active' : ''; ?>" href="/kepala/atur-delegasi" aria-expanded="false">
+                                                <span>
+                                                    <i class="ti ti-user-circle"></i>
+                                                </span>
+                                                <span class="hide-menu">Atur Delegasi</span>
+                                            </a>
+                                        </li>
+                                <?php }
+                                } ?>
                             </ul>
                         </nav>
                         <!-- End Sidebar navigation -->
@@ -528,8 +539,8 @@ $nama_depan = $n[0];
                             </label>
                         </div>
 
-                        <h6 class="mt-5 fw-semibold fs-4 mb-2">Layout Type</h6>
-                        <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <!-- <h6 class="mt-5 fw-semibold fs-4 mb-2">Layout Type</h6> -->
+                        <div class="d-flex flex-row gap-3 customizer-box d-none" role="group">
                             <div>
                                 <input type="radio" class="btn-check" name="page-layout" id="vertical-layout" autocomplete="off" />
                                 <label class="btn p-9 btn-outline-primary" for="vertical-layout">

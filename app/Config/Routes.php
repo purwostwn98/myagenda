@@ -25,11 +25,16 @@ $routes->post('/kepala/do-tambah-agenda', 'Kepala::do_tambah_agenda');
 $routes->post('/kepala/do-edit-agenda', 'Kepala::do_edit_agenda');
 // Kepala (Get)
 $routes->get('/kepala/dashboard', 'Kepala::dashboard');
+$routes->get('/kepala/atur-delegasi', 'Kepala::v_atur_delegasi');
 /// Kepala dinamis
 $routes->post('/kepala/dinamis/modal_tambah_agenda', 'Kepala::modal_tambah_agenda');
 $routes->post('/kepala/dinamis/modal_view_agenda', 'Kepala::modal_view_agenda');
 $routes->post('/kepala/dinamis/modal_edit_agenda', 'Kepala::modal_edit_agenda');
 $routes->post('/kepala/do-hapus-agenda', 'Kepala::do_hapus_agenda');
+$routes->post('/kepala/dinamis/modal_tambah_delegasi', 'Kepala::modal_tambah_delegasi');
+$routes->post('/kepala/dinamis/cari_pengguna_delegasi', 'Kepala::cari_pengguna_delegasi');
+$routes->post('/kepala/do_delegasikan', 'Kepala::do_delegasikan');
+$routes->post('/kepala/do_hapus_delegasi', 'Kepala::do_hapus_delegasi');
 
 //master data
 $routes->get('/master/dosen/sync', 'Master\Dosen::sync');

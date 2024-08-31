@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\Models\BentukKegiatanModel;
 use App\Models\EventModel;
+use App\Models\JabatanModel;
 use App\Models\JenisModel;
 use App\Models\JenisPesertaModel;
 use App\Models\JenisUnitModel;
 use App\Models\UnitModel;
+use App\Models\UserModel;
 use CodeIgniter\I18n\Time;
 
 class Kepala extends BaseController
@@ -18,6 +20,8 @@ class Kepala extends BaseController
     protected $jenisEventModel;
     protected $jenisUnitModel;
     protected $bentukKegiatanModel;
+    protected $jabatanModel;
+    protected $userModel;
 
     public function __construct()
     {
@@ -27,6 +31,8 @@ class Kepala extends BaseController
         $this->jenisEventModel = new JenisModel();
         $this->jenisUnitModel = new JenisUnitModel();
         $this->bentukKegiatanModel = new BentukKegiatanModel();
+        $this->jabatanModel = new JabatanModel();
+        $this->userModel = new UserModel();
     }
 
     public function index(): string
@@ -197,7 +203,7 @@ class Kepala extends BaseController
         echo json_encode($data);
     }
 
-    function do_hapus_agenda()
+    public function do_hapus_agenda()
     {
         if ($this->request->isAJAX()) {
             $idevent = $this->request->getPost("id");
@@ -206,6 +212,122 @@ class Kepala extends BaseController
                 $data = [
                     "success" => true,
                     "pesan" => "Agenda terhapus... "
+                ];
+            } else {
+                $data = [
+                    "success" => true,
+                    "pesan" => "Gagal menghapus ..."
+                ];
+            }
+            echo json_encode($data);
+        } else {
+            exit("Ovovyepjed");
+        }
+    }
+
+
+    // Modul DELEGASI
+    public function v_atur_delegasi()
+    {
+        $idlembaga = $this->session->get("userdata")["idlembaga"];
+        $daftar_delegasi = $this->jabatanModel->where("my_jabatan.idlembaga", $idlembaga)
+            ->where("is_delegasi", 1)
+            ->join("my_unit as unit", "my_jabatan.idlembaga = unit.idlembaga")
+            ->select("idjabatan, nama_lembaga, my_jabatan.idlembaga, uniid_penjabat, nama_penjabat, my_jabatan.updated_at as tgl_delegasi")
+            ->findAll();
+
+        $lembaga = $this->unitModel->where("idlembaga", $idlembaga)->first();
+        $datatampil = [
+            "menu" => "Atur-Delegasi",
+            "daftar_delegasi" => $daftar_delegasi,
+            "lembaga_user" => $lembaga
+        ];
+
+        return view('kepala/atur_delegasi', $datatampil);
+    }
+
+    public function modal_tambah_delegasi()
+    {
+        $datatampil = [
+            "lembaga_user" => $this->unitModel->where("idlembaga", $_SESSION["userdata"]["idlembaga"])->first()
+        ];
+        $data = [
+            'modal' => view("kepala/modal/tambah_delegasi", $datatampil)
+        ];
+        echo json_encode($data);
+    }
+
+    public function cari_pengguna_delegasi()
+    {
+        $key = $this->request->getPost("key");
+        $pengguna = $this->userModel->orderBy('nama_gelar', 'ASC')
+            ->like('username', $key)->orLike('nama_gelar', $key)
+            ->findAll();
+
+        $tr = "";
+        if (empty($pengguna)) {
+            $data["status"] = false;
+            $tr .= ' <tr><td colspan="3"><i>Hasil pencarian tidak ditemukan</i></td></tr>';
+        } else {
+            $data["status"] = true;
+            foreach ($pengguna as $key => $user) {
+                $tr .= '<tr>
+                            <td>' . $user["username"] . '</td>
+                            <td>' . $user["nama_gelar"] . '</td>
+                            <td><button class="btn btn-sm btn-primary" value="' . $user["username"] . '" onclick="addDelegasi(this.value)">Delegasikan</button></td>
+                        </tr>';
+            }
+        }
+        $data = [
+            'tr' => $tr
+        ];
+        echo json_encode($data);
+    }
+
+    public function do_delegasikan()
+    {
+        if ($this->request->isAJAX()) {
+            $uniid = $this->request->getPost("uniid");
+            $idlembaga_user = $_SESSION["userdata"]["idlembaga"];
+            $row_pengguna = $this->userModel->where("username", $uniid)->first();
+            if (!empty($row_pengguna)) {
+                $kode_jabatan = $idlembaga_user . "-" . $uniid;
+                $nama_jabatan = "Delegasi";
+                $nama_penjabat = $row_pengguna["nama_gelar"] . " (" . $uniid . ")";
+                $is_delagasi = 1;
+                $query = $this->jabatanModel->simpan($idlembaga_user, $nama_jabatan, $idlembaga_user, $uniid, $nama_penjabat, $is_delagasi);
+                if ($query != 0) {
+                    $data = [
+                        "status" => true,
+                        "pesan" => $nama_penjabat . " berhasil didelegasikan"
+                    ];
+                } else {
+                    $data = [
+                        "status" => false,
+                        "pesan" => "Gagal proses simpan"
+                    ];
+                }
+            } else {
+                $data = [
+                    "status" => false,
+                    "pesan" => "Fatal Error, user tidak ditemukan"
+                ];
+            }
+            echo json_encode($data);
+        } else {
+            exit("Salah alamat");
+        }
+    }
+
+    public function do_hapus_delegasi()
+    {
+        if ($this->request->isAJAX()) {
+            $idjabatan = $this->request->getPost("idjabatan");
+            $hapus = $this->jabatanModel->hapus($idjabatan);
+            if ($hapus != 0) {
+                $data = [
+                    "success" => true,
+                    "pesan" => "Delegasi terhapus... "
                 ];
             } else {
                 $data = [
