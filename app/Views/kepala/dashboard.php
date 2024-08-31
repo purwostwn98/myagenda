@@ -1,4 +1,4 @@
-<?= $this->extend("/template/modernize.php"); ?>
+<?= $this->extend("/template/horizontal.php"); ?>
 
 <?= $this->section("css"); ?>
 <link rel="stylesheet" href="<?= base_url(); ?>/pro/assets/libs/quill/dist/quill.snow.css">
@@ -19,9 +19,30 @@ $session = $ss->get("userdata");
     <div class="card-body px-4 py-3">
         <div class="row align-items-center">
             <div class="col-9">
-                <h4 class="fw-semibold mb-8">Assalaamu'alaykum, <b class="text-primer"><?= $session["nama_gelar"]; ?></b></h4>
+                <div class="d-flex align-items-center gap-4 mb-4">
+                    <div class="position-relative">
+                        <div class="border border-2 border-warning rounded-circle">
+                            <img src="<?= base_url(); ?>/pro/assets/images/profile/user-1.jpg" class="rounded-circle m-1" alt="user1" width="60">
+                        </div>
+                        <!-- <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary"> 3
+                            <span class="visually-hidden">unread messages</span>
+                        </span> -->
+                    </div>
+                    <div>
+                        <h3 class="fw-semibold">Assalaamu'alaykum, <b class="text-primer"><?= $session["nama_gelar"]; ?></b>
+                        </h3>
+                        <span>Jabatan : <b class="text-primer"><?= $session["jabatan"] == 1 ? $session["nama_jabatan"] : '-'; ?></b> <br> Unit : <b class="text-primer"><?= $row_lembaga["nama_lembaga"]; ?></b></span>
+                        <br>
+                        <?php
+                        $ex = explode(" ", $hari_tanggal);
+                        $tanggal = $ex[0] . " " . $ex[1] . " " . $ex[2] . " " . $ex[3];
+                        ?>
+                        <span class="text-primer"><strong><?= $tanggal; ?></strong></span> <br>
+                    </div>
+                </div>
+                <!-- <h4 class="fw-semibold mb-8">Assalaamu'alaykum, <b class="text-primer"><?= $session["nama_gelar"]; ?></b></h4>
                 <hr>
-                <span>Jabatan : <b class="text-primer"><?= $session["jabatan"] == 1 ? $session["nama_jabatan"] : '-'; ?></b> <br> Unit : <b class="text-primer"><?= $row_lembaga["nama_lembaga"]; ?></b></span>
+                <span>Jabatan : <b class="text-primer"><?= $session["jabatan"] == 1 ? $session["nama_jabatan"] : '-'; ?></b> <br> Unit : <b class="text-primer"><?= $row_lembaga["nama_lembaga"]; ?></b></span> -->
                 <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -40,7 +61,7 @@ $session = $ss->get("userdata");
 </div>
 
 <div class="row">
-    <div class="col-3">
+    <div class="col-md-3 col-sm-12">
         <div class="row">
             <div class="col-lg-12">
                 <!-- Yearly Breakup -->
@@ -99,7 +120,7 @@ $session = $ss->get("userdata");
             </div>
         </div>
     </div>
-    <div class="col-9">
+    <div class="col-md-9 com-sm-12">
         <div class="row">
             <!-- kiri -->
             <div class="col-lg-12  align-items-strech">

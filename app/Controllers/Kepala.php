@@ -8,6 +8,7 @@ use App\Models\JenisModel;
 use App\Models\JenisPesertaModel;
 use App\Models\JenisUnitModel;
 use App\Models\UnitModel;
+use CodeIgniter\I18n\Time;
 
 class Kepala extends BaseController
 {
@@ -37,12 +38,15 @@ class Kepala extends BaseController
         return view('umum/index', $data);
     }
 
+    // ini digunakan untuk dashborad secara umum - meskipun di kepala
     public function dashboard(): string
     {
         $idlembaga = $this->session->get("userdata")["idlembaga"];
         $row_lembaga = $this->unitModel->where("idlembaga", $idlembaga)->first();
         $all_lembaga = $this->unitModel->where("type", $row_lembaga["type"])->select("idlembaga, nama_lembaga")->findAll();
         $jenis_unit = $this->jenisUnitModel->findAll();
+        $datetimeNow = Time::now("Asia/Jakarta");
+
 
         $data = [
             "menu" => "Dashboard",
@@ -50,7 +54,8 @@ class Kepala extends BaseController
             "row_lembaga" => $row_lembaga,
             "all_lembaga" => $all_lembaga,
             "idlembaga_user" => $idlembaga,
-            "jenis_agenda" => $this->jenisEventModel->findAll()
+            "jenis_agenda" => $this->jenisEventModel->findAll(),
+            "hari_tanggal" => datetimeToBahasa($datetimeNow)
         ];
 
         return view('kepala/dashboard', $data);

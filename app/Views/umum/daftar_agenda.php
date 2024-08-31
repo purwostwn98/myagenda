@@ -1,4 +1,4 @@
-<?= $this->extend("/template/modernize.php"); ?>
+<?= $this->extend("/template/horizontal.php"); ?>
 
 <?= $this->section("css"); ?>
 <link rel="stylesheet" href="<?= base_url(); ?>/pro/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" />

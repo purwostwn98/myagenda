@@ -34,6 +34,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'authFilter'    => \App\Filters\authFilter::class,
     ];
 
     /**
@@ -71,6 +72,11 @@ class Filters extends BaseFilters
         'before' => [
             // 'honeypot',
             // 'csrf',
+            'authFilter' => ['except' => [
+                '/',
+                '/cas-login',
+                '/manual-login'
+            ]],
             // 'invalidchars',
         ],
         'after' => [
