@@ -111,6 +111,8 @@
                                 echo "Sangat Penting";
                             } elseif ($event["prioritas_event"] == 2) {
                                 echo "Penting";
+                            } elseif ($event["prioritas_event"] == 3) {
+                                echo "Cukup Penting";
                             } else {
                                 echo "Kurang Penting";
                             }

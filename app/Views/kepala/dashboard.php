@@ -108,7 +108,8 @@ $session = $ss->get("userdata");
                                         <option value="all" selected>Semua Tingkat Kepentingan</option>
                                         <option value="1">Sangat Penting</option>
                                         <option value="2">Penting</option>
-                                        <option value="3">Kurang Penting</option>
+                                        <option value="3">Cukup Penting</option>
+                                        <option value="4">Biasa</option>
                                     </select>
                                 </div>
                             </div>

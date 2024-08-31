@@ -120,7 +120,8 @@
                                     <option value="" selected disabled></option>
                                     <option <?= $event["prioritas_event"] == 1 ? 'selected' : ''; ?> value="1">Sangat Penting</option>
                                     <option <?= $event["prioritas_event"] == 2 ? 'selected' : ''; ?> value="2">Penting</option>
-                                    <option <?= $event["prioritas_event"] == 3 ? 'selected' : ''; ?> value="3">Kurang Penting</option>
+                                    <option <?= $event["prioritas_event"] == 3 ? 'selected' : ''; ?> value="3">Cukup Penting</option>
+                                    <option <?= $event["prioritas_event"] == 4 ? 'selected' : ''; ?> value="4">Biasa</option>
                                 </select>
                             </div>
                         </div>
