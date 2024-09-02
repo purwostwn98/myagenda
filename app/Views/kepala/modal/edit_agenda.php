@@ -105,9 +105,15 @@
                             <div class="form-group">
                                 <label for="link" class="text-primer mt-2"><b>Peserta:</b></label>
                                 <select class="select2 form-control" multiple="multiple" name="id_jnspeserta[]">
-                                    <?php foreach ($jenis_peserta as $key => $j) { ?>
-                                        <option <?= in_array($j["id_jnspeserta"], $peserta) ? 'selected' : ''; ?> value="<?= $j["id_jnspeserta"]; ?>"><?= $j["ket_peserta"]; ?></option>
-                                    <?php } ?>
+                                    <?php if (empty($peserta)) { ?>
+                                        <?php foreach ($jenis_peserta as $key => $j) { ?>
+                                            <option value="<?= $j["id_jnspeserta"]; ?>"><?= $j["ket_peserta"]; ?></option>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <?php foreach ($jenis_peserta as $key => $j) { ?>
+                                            <option <?= in_array($j["id_jnspeserta"], $peserta) ? 'selected' : ''; ?> value="<?= $j["id_jnspeserta"]; ?>"><?= $j["ket_peserta"]; ?></option>
+                                        <?php } ?>
+                                    <?php  } ?>
                                 </select>
                             </div>
                         </div>
