@@ -8,8 +8,10 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->get('/', 'Home::index');
 $routes->get('/index-old', 'Umum::index');
 $routes->get('/daftar-agenda', 'Umum::v_daftar_agenda');
+$routes->get('/cari-agenda', 'Umum::v_cari_agenda_ums');
 $routes->post('/umum/dinamis/load_events', 'Umum::dinamis_load_events');
 $routes->post('/umum/dinamis/dashboard_jenis_unit_change', 'Umum::dashboard_jenis_unit_change');
+$routes->post('/umum/dinamis/load_hasil_cari_agendaums', 'Umum::load_hasil_cari_agendaums');
 
 
 

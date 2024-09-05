@@ -166,7 +166,7 @@ $nama_depan = $n[0];
                                     <span>
                                         <i class="ti ti-archive"></i>
                                     </span>
-                                    <span class="hide-menu">Daftar Agenda</span>
+                                    <span class="hide-menu">Daftar Agenda Unit</span>
                                 </a>
                             </li>
                         </ul>
@@ -419,7 +419,16 @@ $nama_depan = $n[0];
                                         <span>
                                             <i class="ti ti-archive"></i>
                                         </span>
-                                        <span class="hide-menu">Daftar Agenda</span>
+                                        <span class="hide-menu">Daftar Agenda Unit</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link <?= $menu == 'cari-agenda' ? 'active' : ''; ?>" href="/cari-agenda" aria-expanded="false">
+                                        <span>
+                                            <i class="ti ti-layout-sidebar"></i>
+                                        </span>
+                                        <span class="hide-menu">Cari Agenda UMS</span>
                                     </a>
                                 </li>
                                 <?php if ($session["nama_jabatan"] != "-") {

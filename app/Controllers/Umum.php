@@ -182,24 +182,6 @@ class Umum extends BaseController
                 'textColor' => '#ffffff' // Warna teks
             );
         }
-        // $events = [
-        //     [
-        //         'title' => 'Evaluasi Semester',
-        //         'start' => '2024-07-22',
-        //         'end' => '2024-07-24',
-        //         'backgroundColor' => '#ff9f00', // Warna latar belakang
-        //         'borderColor' => '#ff9f00', // Warna border
-        //         'textColor' => '#ffffff' // Warna teks
-        //     ],
-        //     [
-        //         'title' => 'Sosialisasi Akreditasi',
-        //         'start' => '2024-07-25',
-        //         'end' => '2024-07-26',
-        //         'backgroundColor' => '#007bff',
-        //         'borderColor' => '#007bff',
-        //         'textColor' => '#ffffff'
-        //     ]
-        // ];
 
         $data = [
             'events' => $events
@@ -237,7 +219,8 @@ class Umum extends BaseController
         $next30Days = Time::now()->addDays(30);
 
         $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
-            ->where("start >=", $timeNow->toDateString())->where("end <=", $next30Days->toDateString())
+            // ->where(["start >=" => $timeNow->toDateString(), "start <=" => $next30Days->toDateString()])
+            ->where(["end >=" => $timeNow->toDateString(), "end <=" => $next30Days->toDateString()])
             ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
             ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
             ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
@@ -270,5 +253,99 @@ class Umum extends BaseController
         ];
 
         return view('umum/daftar_agenda', $datatampil);
+    }
+
+    public function v_cari_agenda_ums()
+    {
+        $timeNow = Time::now();
+        $next30Days = Time::now()->addDays(30);
+
+        // $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
+        //     // ->where(["start >=" => $timeNow->toDateString(), "start <=" => $next30Days->toDateString()])
+        //     ->where(["end >=" => $timeNow->toDateString(), "end <=" => $next30Days->toDateString()])
+        //     ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
+        //     ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
+        //     ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
+        //     ->select("idevent, title, start, end, ket_jenis, ket_bentuk, tempat_event, my_event.idlembaga")
+        //     ->orderBy("start", "ASC")
+        //     ->findAll();
+
+        // $arr_agenda = [];
+        // foreach ($event as $k => $e) {
+        //     $arr_agenda[] = [
+        //         "title" => $e["title"],
+        //         "tempat_event" => $e["tempat_event"],
+        //         "start" => datetimeToBahasa($e["start"]),
+        //         "end" => datetimeToBahasa($e["end"]),
+        //         "ket_jenis" => $e["ket_jenis"],
+        //         "ket_bentuk" => $e["ket_bentuk"],
+        //     ];
+        // }
+
+        $idlembaga_user = $this->session->get("userdata")["idlembaga"];
+        $lembaga = $this->unitModel->where("idlembaga", $idlembaga_user)->first();
+        // $peserta = json_decode($event["peserta"]);
+        // $jenis_peserta = $this->jenisPesertaModel->whereIn("id_jnspeserta", $peserta)->select("ket_peserta")->findAll();
+
+        $datatampil = [
+            "menu" => "cari-agenda",
+            // "event" => $arr_agenda,
+            "lembaga_user" => $lembaga,
+            "jabatan" => $this->session->get("userdata")["jabatan"]
+        ];
+
+        return view('umum/cari_agenda_ums', $datatampil);
+    }
+
+    //dinamis
+    public function load_hasil_cari_agendaums()
+    {
+        $title = $this->request->getPost("key");
+        $waktu = $this->request->getPost("waktu");
+        $timeNow = Time::now();
+
+        if ($title == "") {
+            $where = [];
+            $data["status"] = false;
+        } else {
+            if ($waktu == 1) {
+                $where = ["start >=" => $timeNow->toDateString()];
+            } else {
+                $where = ["start <=" => $timeNow->toDateString()];
+            }
+        }
+
+        $results = $this->eventModel
+            ->like('title', strval($title))
+            ->where($where)
+            ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
+            ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
+            ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
+            ->select("idevent, title, start, end, ket_jenis, ket_bentuk, tempat_event, my_event.idlembaga, nama_lembaga, nama_singkat")
+            ->orderBy("start", "ASC")
+            ->findAll();
+
+        $arr_agenda = [];
+        foreach ($results as $k => $e) {
+            $arr_agenda[] = [
+                "title" => $e["title"],
+                "tempat_event" => $e["tempat_event"],
+                "start" => datetimeToBahasa($e["start"]),
+                "end" => datetimeToBahasa($e["end"]),
+                "ket_jenis" => $e["ket_jenis"],
+                "ket_bentuk" => $e["ket_bentuk"],
+                "idevent" => $e["idevent"],
+                "nama_lembaga" => $e["nama_lembaga"],
+                "nama_singkat" => $e["nama_singkat"]
+            ];
+        }
+
+        $datatampil = [
+            "results" => $arr_agenda
+        ];
+        $data = [
+            'view' => view("umum/dinamis/hasil_pencarian_agenda", $datatampil)
+        ];
+        echo json_encode($data);
     }
 }
