@@ -38,7 +38,7 @@
                         <div class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
                             <div class="auth-max-width col-sm-8 col-md-6 col-xl-7 px-4">
                                 <h2 class="mb-1 fs-7 fw-bolder">Selamat datang di My Agenda</h2>
-                                <a class="text-center"><i>Beta Version</i></a>
+                                <!-- <a class="text-center"><i>Beta Version</i></a> -->
                                 <hr>
                                 <div class="row">
                                     <div class="col-12">

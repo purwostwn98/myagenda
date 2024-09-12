@@ -34,11 +34,16 @@ class Umum extends BaseController
         $bentuk_agenda = $this->request->getPost("bentuk_agenda");
 
         $where = [];
+        $whereUms = [];
         if ($type != "all") {
             $where["type"] = $type;
         }
         if ($unit != "all") {
-            $where["my_event.idlembaga"] = $unit;
+            if ($unit == $this->session->get("userdata")["idlembaga"]) {
+                $where = "my_event.idlembaga='" . $unit . "' OR my_event.idlembaga='lmbg1001'";
+            } else {
+                $where["my_event.idlembaga"] = $unit;
+            }
         }
         if ($jenis_agenda != "all") {
             $where["idjenis"] = $jenis_agenda;
@@ -67,7 +72,7 @@ class Umum extends BaseController
             "#DEB887",
             "#FFFFE0",
             "#FFFF00",
-            "#2f3184",
+            "#0047ab",
             "#FF00FF",
             "#00FFFF",
             "#800000",
@@ -183,6 +188,7 @@ class Umum extends BaseController
 
         $saved_event = $this->eventModel->join("my_unit as unit", "my_event.idlembaga = unit.idlembaga")
             ->where($where)
+            // ->where($whereUms)
             ->orderBy("unit.kepentingan, prioritas_event", "ASC")
             ->findAll();
 
