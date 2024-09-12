@@ -295,7 +295,7 @@ class Kepala extends BaseController
                 $nama_jabatan = "Delegasi";
                 $nama_penjabat = $row_pengguna["nama_gelar"] . " (" . $uniid . ")";
                 $is_delagasi = 1;
-                $query = $this->jabatanModel->simpan($idlembaga_user, $nama_jabatan, $idlembaga_user, $uniid, $nama_penjabat, $is_delagasi);
+                $query = $this->jabatanModel->simpan($kode_jabatan, $nama_jabatan, $idlembaga_user, $uniid, $nama_penjabat, $is_delagasi);
                 if ($query != 0) {
                     $data = [
                         "status" => true,

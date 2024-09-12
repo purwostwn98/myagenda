@@ -12,6 +12,7 @@ $routes->get('/cari-agenda', 'Umum::v_cari_agenda_ums');
 $routes->post('/umum/dinamis/load_events', 'Umum::dinamis_load_events');
 $routes->post('/umum/dinamis/dashboard_jenis_unit_change', 'Umum::dashboard_jenis_unit_change');
 $routes->post('/umum/dinamis/load_hasil_cari_agendaums', 'Umum::load_hasil_cari_agendaums');
+$routes->post('/umum/dinamis/tr_agenda_unit', 'Umum::tr_agenda_unit');
 
 
 

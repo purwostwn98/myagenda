@@ -111,7 +111,6 @@ class Umum extends BaseController
             "#FA8072",
             "#F4A460",
             "#D2B48C",
-
             "#FFFF00",
             "#F5DEB3",
             "#FFE4C4",
@@ -162,7 +161,24 @@ class Umum extends BaseController
             "#9ACD32",
             "#6B8E23",
             "#BDB76B",
-            "#C0C0C0"
+            "#C0C0C0",
+            "#FF0000",
+            "#00FF00",
+            "#808000",
+            "#800080",
+            "#008080",
+            "#C0C0C0",
+            "#808080",
+            "#FF6347",
+            "#0000FF",
+            "#F0E68C",
+            "#DEB887",
+            "#FFFFE0",
+            "#2f3184",
+            "#FFFF00",
+            "#FF00FF",
+            "#00FFFF",
+            "#800000",
         ];
 
         $saved_event = $this->eventModel->join("my_unit as unit", "my_event.idlembaga = unit.idlembaga")
@@ -218,48 +234,6 @@ class Umum extends BaseController
         $timeNow = Time::now();
         $next30Days = Time::now()->addDays(30);
 
-        $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
-            // ->where(["start >=" => $timeNow->toDateString(), "start <=" => $next30Days->toDateString()])
-            ->where(["end >=" => $timeNow->toDateString(), "end <=" => $next30Days->toDateString()])
-            ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
-            ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
-            ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
-            ->select("idevent, title, start, end, ket_jenis, ket_bentuk, tempat_event, my_event.idlembaga")
-            ->orderBy("start", "ASC")
-            ->findAll();
-
-        $arr_agenda = [];
-        foreach ($event as $k => $e) {
-            $arr_agenda[] = [
-                "title" => $e["title"],
-                "tempat_event" => $e["tempat_event"],
-                "start" => datetimeToBahasa($e["start"]),
-                "end" => datetimeToBahasa($e["end"]),
-                "ket_jenis" => $e["ket_jenis"],
-                "ket_bentuk" => $e["ket_bentuk"],
-            ];
-        }
-
-        $idlembaga_user = $this->session->get("userdata")["idlembaga"];
-        $lembaga = $this->unitModel->where("idlembaga", $idlembaga_user)->first();
-        // $peserta = json_decode($event["peserta"]);
-        // $jenis_peserta = $this->jenisPesertaModel->whereIn("id_jnspeserta", $peserta)->select("ket_peserta")->findAll();
-
-        $datatampil = [
-            "menu" => "Daftar-Agenda",
-            "event" => $arr_agenda,
-            "lembaga_user" => $lembaga,
-            "jabatan" => $this->session->get("userdata")["jabatan"]
-        ];
-
-        return view('umum/daftar_agenda', $datatampil);
-    }
-
-    public function v_cari_agenda_ums()
-    {
-        $timeNow = Time::now();
-        $next30Days = Time::now()->addDays(30);
-
         // $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
         //     // ->where(["start >=" => $timeNow->toDateString(), "start <=" => $next30Days->toDateString()])
         //     ->where(["end >=" => $timeNow->toDateString(), "end <=" => $next30Days->toDateString()])
@@ -288,8 +262,64 @@ class Umum extends BaseController
         // $jenis_peserta = $this->jenisPesertaModel->whereIn("id_jnspeserta", $peserta)->select("ket_peserta")->findAll();
 
         $datatampil = [
-            "menu" => "cari-agenda",
+            "menu" => "Daftar-Agenda",
             // "event" => $arr_agenda,
+            "lembaga_user" => $lembaga,
+            "jabatan" => $this->session->get("userdata")["jabatan"]
+        ];
+
+        return view('umum/daftar_agenda', $datatampil);
+    }
+
+    public function tr_agenda_unit()
+    {
+        $range = $this->request->getPost("range");
+        $timeNow = Time::now();
+        $nextDays = Time::now()->addDays($range);
+
+        $event = $this->eventModel->where("my_event.idlembaga", $this->session->get("userdata")["idlembaga"])
+            // ->where(["start >=" => $timeNow->toDateString(), "start <=" => $next30Days->toDateString()])
+            ->where(["end >=" => $timeNow->toDateString(), "end <=" => $nextDays->toDateString()])
+            ->join("my_unit", "my_event.idlembaga = my_unit.idlembaga")
+            ->join("my_jenis_event as jenis", "my_event.idjenis = jenis.idjenis", "LEFT")
+            ->join("my_bentuk_kegiatan as bentuk", "my_event.bentuk_kegiatan = bentuk.id_bentuk_kegiatan", "LEFT")
+            ->select("idevent, title, start, end, ket_jenis, ket_bentuk, tempat_event, my_event.idlembaga")
+            ->orderBy("start", "ASC")
+            ->findAll();
+
+        if (empty($event)) {
+            $tr = '<tr><td colspan="7">Agenda ' . $range . ' hari yang akan datang tidak ditemukan</td></tr>';
+        } else {
+            $tr = "";
+            foreach ($event as $k => $e) {
+                $tr .=  '<tr>
+                        <td>' . $k + 1 . '</td>
+                        <td>' . datetimeToBahasa($e["start"]) . '</td>
+                        <td>' . datetimeToBahasa($e["end"]) . '</td>
+                        <td>' . $e["title"] . '</td>
+                        <td>' . $e["tempat_event"] . '</td>
+                        <td>' . $e["ket_jenis"] . '</td>
+                        <td>' . $e["ket_bentuk"] . '</td>
+                    </tr>';
+            }
+        }
+
+        $datatampil = [
+            "tr" => $tr
+        ];
+        echo json_encode($datatampil);
+    }
+
+    public function v_cari_agenda_ums()
+    {
+        $timeNow = Time::now();
+        $next30Days = Time::now()->addDays(30);
+
+        $idlembaga_user = $this->session->get("userdata")["idlembaga"];
+        $lembaga = $this->unitModel->where("idlembaga", $idlembaga_user)->first();
+
+        $datatampil = [
+            "menu" => "cari-agenda",
             "lembaga_user" => $lembaga,
             "jabatan" => $this->session->get("userdata")["jabatan"]
         ];

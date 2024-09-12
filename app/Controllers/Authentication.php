@@ -69,6 +69,38 @@ class Authentication extends BaseController
 
                         //  redirect()->to('/kepala/dashboard');
                         return $this->generate_session_login($uniid, $nama_gelar, $jabatan, $idlembaga, $nama_jabatan);
+                    } elseif ($user_intable["username"] == "ums") {
+                        #cek apakah dia punya jabatan
+                        $jabatan = $this->jabatanModel->where("uniid_penjabat", $uniid)
+                            ->orderBy("idlembaga", "ASC")
+                            ->findAll();
+                        if (!empty($jabatan)) {
+                            $idlembaga = $jabatan[0]["idlembaga"];
+                            $nama_jabatan = $jabatan[0]["nama_jabatan"];
+                            $jabatan = 1;
+                        } else {
+                            $idlembaga = "lmbg1001";
+                            $nama_jabatan = "-";
+                            $jabatan = 0;
+                        }
+                        $username = $uniid;
+                        $password_simpan = password_hash("bpp@2024", PASSWORD_DEFAULT);
+                        $nama_gelar = "Universitas Muhammadiyah Surakarta";
+
+                        // generate session
+                        // $data_session = [
+                        //     "login" => true,
+                        //     "uniid" => $uniid,
+                        //     "nama_gelar" => $nama_gelar,
+                        //     "jabatan" => $jabatan,
+                        //     "idlembaga" => $idlembaga,
+                        //     "nama_jabatan" => $nama_jabatan
+                        // ];
+
+                        // $_SESSION['userdata'] =  $data_session;
+
+                        //  redirect()->to('/kepala/dashboard');
+                        return $this->generate_session_login($uniid, $nama_gelar, $jabatan, $idlembaga, $nama_jabatan);
                     } else {
                         exit("Anda tidak terdaftar di sistem UMS");
                     }
